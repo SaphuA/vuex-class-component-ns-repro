@@ -47,8 +47,8 @@ console.log(vxm.myStore.subA.age);
 vxm.myStore.subA.name = "Harry";
 console.log(vxm.myStore.subA.name);
 
-vxm.myStore.subN.age = 3;
-console.log(vxm.myStore.subN.age);
+vxm.myStore.subN.age = 3; // unknown mutation type: MyStore/SubStoreN/__substoren_internal_mutator__
+console.log(vxm.myStore.subN.age); // $store.getters[(namespacedPath + ("__" + className + "_internal_getter__"))] is not a function
 
-vxm.myStore.subN.name = "Hermoine";
-console.log(vxm.myStore.subN.name);
+vxm.myStore.subN.name = "Hermoine"; // unknown mutation type: MyStore/SubStoreN/name
+console.log(vxm.myStore.subN.name); // Undefined
