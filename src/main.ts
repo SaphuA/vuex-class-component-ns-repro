@@ -1,16 +1,15 @@
 import { Vue } from "vue-property-decorator";
-import Vuelidate from "vuelidate";
-Vue.config.productionTip = false;
-Vue.use(Vuelidate);
+import { store, vxm } from "@/store";
 
-import { store } from "@/store";
+Vue.component("test", {
+    data: () => { return { store: vxm.myStore } },
+    template: `<div></div>`
+});
 
-// Insert a div in which Vue will render
 const d = document.createElement("div");
 document.body.appendChild(d);
-
 new Vue({
     name: "Main",
     store,
-    render: (h) => h({ name: "Root", template: "<h1>Main</h1>" }),
+    render: (h) => h({ name: "Root", template: "<test />" }),
 }).$mount(d);

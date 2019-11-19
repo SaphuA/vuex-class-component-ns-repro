@@ -1,25 +1,30 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { extractVuexModule, createProxy, createModule } from "vuex-class-component";
-
+import { extractVuexModule, createProxy, createModule, createSubModule, mutation, action } from "vuex-class-component";
 Vue.use(Vuex);
 
-export class StoreA extends createModule({ namespaced: "StoreA", strict: true }) { }
-export class StoreB extends createModule({ namespaced: "StoreB", strict: true }) { }
-console.log(extractVuexModule(StoreA));
-console.log(extractVuexModule(StoreB));
-export class StoreC extends createModule({ namespaced: "StoreC", strict: true }) { }
-console.log(extractVuexModule(StoreA));
-console.log(extractVuexModule(StoreB));
-console.log(extractVuexModule(StoreC));
+const VuexModule = createModule({});
+export class MyStore extends VuexModule.With({ strict: false, namespaced: "MyStore" }) {
+    public subA = createSubModule(SubStoreA);
+    public subB = createSubModule(SubStoreB);
+}
+
+export class SubStoreA extends VuexModule.With({ strict: false }) {
+    public age: number = 0;
+}
+
+export class SubStoreB extends VuexModule.With({ strict: false, namespaced: "SubStoreB" }) {
+    public name: string = "";
+}
 
 const modules = {
-    ...extractVuexModule(StoreA),
-    ...extractVuexModule(StoreB),
-    ...extractVuexModule(StoreC),
+    ...extractVuexModule(MyStore),
 };
 
-console.log(modules);
-
 export const store = new Vuex.Store({ modules });
-export const vxm = {};
+export const vxm = {
+    myStore: createProxy(store, MyStore) as MyStore,
+};
+
+vxm.myStore.subA.age = 7; // works
+vxm.myStore.subB.name = "test"; // error
