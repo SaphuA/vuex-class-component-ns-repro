@@ -33,14 +33,6 @@ export const vxm = {
     myStore: createProxy(store, MyStore) as MyStore,
 };
 
-var t = (f: any) => {
-    try {
-        f();
-    } catch (x) {
-        console.error(x);
-    }
-};
-
 vxm.myStore.subA.age = 7;
 console.log(vxm.myStore.subA.age);
 
