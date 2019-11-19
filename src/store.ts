@@ -3,18 +3,17 @@ import Vuex from "vuex";
 import { extractVuexModule, createProxy, createModule, createSubModule, mutation, action } from "vuex-class-component";
 Vue.use(Vuex);
 
-const VuexModule = createModule({});
-export class MyStore extends VuexModule.With({ strict: false, namespaced: "MyStore" }) {
+export class MyStore extends createModule({}).With({ strict: false, namespaced: "MyStore" }) {
     public subA = createSubModule(SubStoreA);
-    public subB = createSubModule(SubStoreB);
+    public subN = createSubModule(SubStoreN);
 }
 
-export class SubStoreA extends VuexModule.With({ strict: false }) {
+export class SubStoreA extends createModule({}).With({ strict: false }) {
     public age: number = 0;
 }
 
-export class SubStoreB extends VuexModule.With({ strict: false, namespaced: "SubStoreB" }) {
-    public name: string = "";
+export class SubStoreN extends createModule({}).With({ strict: false, namespaced: "SubStoreN" }) {
+    public age: number = 0;
 }
 
 const modules = {
@@ -26,5 +25,5 @@ export const vxm = {
     myStore: createProxy(store, MyStore) as MyStore,
 };
 
-vxm.myStore.subA.age = 7; // works
-vxm.myStore.subB.name = "test"; // error
+vxm.myStore.subA.age = 7;
+vxm.myStore.subN.age = 1337; // Error
