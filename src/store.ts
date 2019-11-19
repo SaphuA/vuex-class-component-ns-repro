@@ -10,10 +10,18 @@ export class MyStore extends createModule({}).With({ strict: false, namespaced: 
 
 export class SubStoreA extends createModule({}).With({ strict: false }) {
     public age: number = 0;
+
+    private _name: string = "x";
+    public get name() { return this._name; }
+    public set name(name: string) { this._name = name; }
 }
 
 export class SubStoreN extends createModule({}).With({ strict: false, namespaced: "SubStoreN" }) {
     public age: number = 0;
+
+    private _name: string = "x";
+    public get name() { return this._name; }
+    public set name(name: string) { this._name = name; }
 }
 
 const modules = {
@@ -25,5 +33,22 @@ export const vxm = {
     myStore: createProxy(store, MyStore) as MyStore,
 };
 
+var t = (f: any) => {
+    try {
+        f();
+    } catch (x) {
+        console.error(x);
+    }
+};
+
 vxm.myStore.subA.age = 7;
-vxm.myStore.subN.age = 1337; // Error
+console.log(vxm.myStore.subA.age);
+
+vxm.myStore.subA.name = "Harry";
+console.log(vxm.myStore.subA.name);
+
+vxm.myStore.subN.age = 3;
+console.log(vxm.myStore.subN.age);
+
+vxm.myStore.subN.name = "Hermoine";
+console.log(vxm.myStore.subN.name);
